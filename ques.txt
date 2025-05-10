@@ -1,0 +1,36 @@
+ToDo:
+- need to update the feed API:
+   - If someone igone then need to show this user in the last obj of the feed in next time.
+
+
+
+
+
+
+
+
+====================================================
+
+User.findOne with duplicate, which obj it return.
+diff b/w patch & put
+
+unique email id prob
+docs ref: schema type
+
+
+# imp:
+- DB indexing for fast query 
+- compound indexes
+- adv and disAdv of indexes ?
+- what if I create lots of indexes
+- $or & $and query
+- Comparison query & Logical query
+
+
+- robost the system when user base is more then 1 millon how can we scall the application. 
+
+========================================
+READ ABOUT:
+- Thought process - post vs get API
+
+
