@@ -38,3 +38,11 @@ AWS
 
 to map :3001 to /api run this commad on the root:
 sudo nano /etc/nginx/sites-available/default
+
+
+dns, nameserver, register domain name.
+when we take a domain name how it work internally ?
+
+http://16.16.185.216/
+
+crushes.in

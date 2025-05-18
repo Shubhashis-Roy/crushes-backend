@@ -2,6 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
+const { run } = require("../aws/sendEmail");
 
 const requestRouter = express.Router();
 
@@ -58,6 +59,10 @@ requestRouter.post(
         toUserId,
         status,
       });
+
+      // Send email
+      // const emailRes = await run();
+      // console.log("emailRes:", emailRes);
 
       const data = await connectionRequest.save();
 
