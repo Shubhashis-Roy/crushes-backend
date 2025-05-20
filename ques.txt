@@ -1,6 +1,7 @@
 ToDo:
 - need to update the feed API:
    - If someone igone then need to show this user in the last obj of the feed in next time.
+- make dynamic recipient email id.
 
 
 
