@@ -4,7 +4,7 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-require("./cron-job/cronjob");
+// require("./cron-job/cronjob");
 
 const app = express();
 

@@ -4,7 +4,7 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const sendEmail = require("../aws/sendEmail");
 
 cron.schedule("14 23 * * *", async () => {
-  const yesterday = subDays(new Date(), 0);
+  const yesterday = subDays(new Date(), 1);
   const yesterdayStart = startOfDay(yesterday);
   const yesterdayEnd = endOfDay(yesterday);
 
@@ -21,12 +21,9 @@ cron.schedule("14 23 * * *", async () => {
       ...new Set(yesterdayPendingRequests.map((req) => req.toUserId.emailId)),
     ];
 
-    console.log("listOfEmais: ", listOfEmais);
     for (const email of listOfEmais) {
       try {
         const res = await sendEmail.run(email);
-
-        console.log("res send email: ", res);
       } catch (error) {
         console.error("sendEmail error:", error);
       }
