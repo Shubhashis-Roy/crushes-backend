@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const http = require("http");
 
 // require("./cron-job/cronjob");
 
@@ -24,16 +25,20 @@ const authRouter = require("./routes/auth");
 const requestRouter = require("./routes/request");
 const profileRouter = require("./routes/profile");
 const userRouter = require("./routes/user");
+const initialzeSocket = require("./socket/socket");
 
 app.use("/", authRouter);
 app.use("/", requestRouter);
 app.use("/", profileRouter);
 app.use("/", userRouter);
 
+const server = http.createServer(app);
+initialzeSocket(server);
+
 connectDB()
   .then(() => {
     console.log("DB connection established...");
-    app.listen(3001, () => {
+    server.listen(3001, () => {
       console.log("server is listening on port 3001");
     });
   })
