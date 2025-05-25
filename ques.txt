@@ -3,6 +3,10 @@ ToDo:
    - If someone igone then need to show this user in the last obj of the feed in next time.
 - make dynamic recipient email id.
 
+- last seen/last active : save the time when stabisted connection and keep updating
+- online or not
+- limit/pagination msg in getChat API.
+
 
 
 

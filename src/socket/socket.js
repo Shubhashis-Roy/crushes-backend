@@ -1,6 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const Chat = require("../models/chat");
+const ConnectionRequestModel = require("../models/connectionRequest");
 
 const getSecretRoomId = (userId, targetUserId) => {
   return crypto
@@ -29,6 +30,29 @@ const initialzeSocket = (server) => {
       "sendMessage",
       async ({ firstName, lastName, userId, targetUserId, text }) => {
         const roomId = getSecretRoomId(userId, targetUserId);
+
+        // check if yhe userId & targetUserId is frnd
+
+        const existingConnectionReq = await ConnectionRequestModel.findOne({
+          $or: [
+            {
+              fromUserId: userId,
+              toUserId: targetUserId,
+              status: "accepted",
+            },
+            {
+              fromUserId: targetUserId,
+              toUserId: userId,
+              status: "accepted",
+            },
+          ],
+        });
+
+        if (!existingConnectionReq) {
+          res.json({
+            message: "They are not frind not each other.",
+          });
+        }
 
         try {
           let chat = await Chat.findOne({
