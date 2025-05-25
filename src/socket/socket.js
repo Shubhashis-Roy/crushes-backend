@@ -50,7 +50,7 @@ const initialzeSocket = (server) => {
 
         if (!existingConnectionReq) {
           return res.json({
-            message: "They are not frind not each other.",
+            message: "They are not frind to each other.",
           });
         }
 
