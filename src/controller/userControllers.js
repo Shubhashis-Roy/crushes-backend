@@ -1,14 +1,10 @@
-const express = require("express");
-const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
-
-const userRouter = express.Router();
 
 const USER_SAFE_DATA = "firstName lastName photoUrl skills about age";
 
 // Get all the received connection request
-userRouter.get("/user/requests/received", userAuth, async (req, res) => {
+const getReceivedConnection = async (req, res) => {
   try {
     const loggedInUser = req.user;
 
@@ -22,13 +18,14 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
       data: connectionReq,
     });
   } catch (error) {
-    req.statusCode(400).send("Error in get user request: ", error.message);
+    res
+      .status(400)
+      .json({ error: `Error in getReceivedConnection: ${error.message}` });
   }
-});
+};
 
-// Test this API
 // Get all the user connections
-userRouter.get("/user/connections", userAuth, async (req, res) => {
+const getAllConnection = async (req, res) => {
   try {
     const loggedInUser = req.user;
 
@@ -50,16 +47,18 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
     res.json({ data });
   } catch (error) {
-    req.statusCode(400).send("Error in get user connections: ", error.message);
+    res
+      .status(400)
+      .json({ error: `Error in getAllConnection: ${error.message}` });
   }
-});
+};
 
 // User should not see
 //0. his own card
 //1. his connections
 //2. ignored people
 //3. already sent the connection req
-userRouter.get("/feed", userAuth, async (req, res) => {
+const getFeed = async (req, res) => {
   try {
     const loggedInUser = req.user;
 
@@ -103,6 +102,6 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       message: error.message,
     });
   }
-});
+};
 
-module.exports = userRouter;
+module.exports = { getReceivedConnection, getAllConnection, getFeed };

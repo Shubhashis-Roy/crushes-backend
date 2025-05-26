@@ -1,13 +1,9 @@
-const express = require("express");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { validateSignUpData } = require("../utils/validation");
 const User = require("../models/user");
 
-const authRouter = express.Router();
-
-// signup API
-authRouter.post("/signup", async (req, res) => {
+const signupController = async (req, res) => {
   // Encryt the password
   try {
     // Validation of data
@@ -46,10 +42,9 @@ authRouter.post("/signup", async (req, res) => {
     // }
     res.status(400).send(`Signup Error: ${err.message}`);
   }
-});
+};
 
-// Login
-authRouter.post("/login", async (req, res) => {
+const loginController = async (req, res) => {
   try {
     const { emailId, password } = req.body;
 
@@ -81,15 +76,14 @@ authRouter.post("/login", async (req, res) => {
   } catch (error) {
     res.status(400).send(`login api Error: ${error.message}`);
   }
-});
+};
 
-// Logout
-authRouter.post("/logout", async (req, res) => {
+const logoutController = async (_, res) => {
   res
     .cookie("token", null, {
       expires: new Date(Date.now()),
     })
     .send("Logout Successful!!");
-});
+};
 
-module.exports = authRouter;
+module.exports = { signupController, loginController, logoutController };

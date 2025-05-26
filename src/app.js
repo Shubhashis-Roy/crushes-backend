@@ -21,10 +21,10 @@ app.use(express.json());
 app.use(cookieParser());
 // User.syncIndexes();
 
-const authRouter = require("./routes/auth");
+const authRouter = require("./routes/authRoute");
 const requestRouter = require("./routes/request");
 const profileRouter = require("./routes/profile");
-const userRouter = require("./routes/user");
+const userRouter = require("./routes/userRoute");
 const initialzeSocket = require("./socket/socket");
 const chatRouter = require("./routes/chat");
 
