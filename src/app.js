@@ -22,8 +22,8 @@ app.use(cookieParser());
 // User.syncIndexes();
 
 const authRouter = require("./routes/authRoute");
-const requestRouter = require("./routes/request");
-const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/requestRoute");
+const profileRouter = require("./routes/profileRoute");
 const userRouter = require("./routes/userRoute");
 const initialzeSocket = require("./socket/socket");
 const chatRouter = require("./routes/chat");

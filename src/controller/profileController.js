@@ -1,21 +1,15 @@
-const express = require("express");
-const { userAuth } = require("../middlewares/auth");
 const { validateEditProfileData } = require("../utils/validation");
 
-const profileRouter = express.Router();
-
-// Profile
-profileRouter.get("/profile/view", userAuth, async (req, res) => {
+const getUserProfile = async (req, res) => {
   try {
     const user = req.user;
     res.send(user);
   } catch (error) {
     res.status(400).send(`profile api Error: ${error.message}`);
   }
-});
+};
 
-// Edit profile
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+const updateProfile = async (req, res) => {
   try {
     if (!validateEditProfileData(req)) {
       // return res.status(400).send("")
@@ -35,6 +29,6 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   } catch (error) {
     res.status(400).send(`profileUpdate api Error: ${error.message}`);
   }
-});
+};
 
-module.exports = profileRouter;
+module.exports = { getUserProfile, updateProfile };
