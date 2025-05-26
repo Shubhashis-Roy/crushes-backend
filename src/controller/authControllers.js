@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const { validateSignUpData } = require("../utils/validation");
 const User = require("../models/user");
 
-const signupController = async (req, res) => {
+const register = async (req, res) => {
   // Encryt the password
   try {
     // Validation of data
@@ -44,7 +44,7 @@ const signupController = async (req, res) => {
   }
 };
 
-const loginController = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { emailId, password } = req.body;
 
@@ -78,7 +78,7 @@ const loginController = async (req, res) => {
   }
 };
 
-const logoutController = async (_, res) => {
+const logout = async (_, res) => {
   res
     .cookie("token", null, {
       expires: new Date(Date.now()),
@@ -86,4 +86,4 @@ const logoutController = async (_, res) => {
     .send("Logout Successful!!");
 };
 
-module.exports = { signupController, loginController, logoutController };
+module.exports = { register, login, logout };
