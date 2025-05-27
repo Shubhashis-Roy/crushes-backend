@@ -1,7 +1,7 @@
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
-const USER_SAFE_DATA = "firstName lastName photoUrl skills about age";
+const USER_SAFE_DATA = "firstName lastName city photoUrl skills about age";
 
 // Get all the received connection request
 const getReceivedConnection = async (req, res) => {
@@ -90,8 +90,8 @@ const getFeed = async (req, res) => {
       ],
     })
       .select(USER_SAFE_DATA)
-      .skip(skip)
-      .limit(limit);
+      .skip(skip);
+    // .limit(limit);
 
     res.json({
       message: "Feed users",

@@ -9,7 +9,7 @@ const register = async (req, res) => {
     // Validation of data
     validateSignUpData(req);
 
-    const { password, firstName, lastName, emailId } = req.body;
+    const { password, firstName, lastName, city, emailId } = req.body;
 
     // Encryt the password
     const passwordHash = await bcrypt.hash(password, 10);
@@ -18,6 +18,7 @@ const register = async (req, res) => {
     const user = new User({
       firstName,
       lastName,
+      city,
       emailId,
       password: passwordHash,
     });
