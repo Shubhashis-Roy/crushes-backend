@@ -2,6 +2,8 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { validateSignUpData } = require("../utils/validation");
 const User = require("../models/user");
+const Chat = require("../models/chat");
+const ConnectionRequest = require("../models/connectionRequest");
 
 const register = async (req, res) => {
   // Encryt the password
@@ -87,4 +89,27 @@ const logout = async (_, res) => {
     .send("Logout Successful!!");
 };
 
-module.exports = { register, login, logout };
+const deleteUser = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const deleteUser = await User.findByIdAndDelete(userId);
+
+    if (!deleteUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await ConnectionRequest.findOneAndDelete({
+      $or: [{ fromUserId: userId }, { toUserId: userId }],
+    });
+
+    await Chat.deleteMany({ "messages.senderId": userId });
+
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { register, login, logout, deleteUser };
