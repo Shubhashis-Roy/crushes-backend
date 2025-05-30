@@ -60,8 +60,8 @@ const login = async (req, res) => {
     const { emailId, password } = req.body;
 
     if (!validator.isEmail(emailId)) {
-      // throw new Error("Email Id not valid!");
-      throw new Error("Invalid credentials!");
+      throw new Error("Email Id not valid!");
+      // throw new Error("Invalid credentials!");
     }
 
     const user = await User.findOne({ emailId: emailId });
