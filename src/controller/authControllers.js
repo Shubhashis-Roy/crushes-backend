@@ -8,10 +8,18 @@ const ConnectionRequest = require("../models/connectionRequest");
 const register = async (req, res) => {
   // Encryt the password
   try {
+    const { password, firstName, lastName, city, emailId } = req.body;
+
+    const alreadyPresentUser = await User.findOne({ emailId });
+
+    if (alreadyPresentUser) {
+      return res
+        .status(409)
+        .json({ message: "Email already exists", alreadyPresentUser });
+    }
+
     // Validation of data
     validateSignUpData(req);
-
-    const { password, firstName, lastName, city, emailId } = req.body;
 
     // Encryt the password
     const passwordHash = await bcrypt.hash(password, 10);
