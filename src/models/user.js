@@ -55,13 +55,12 @@ const userSchema = new mongoose.Schema(
       // },
     },
     photoUrl: {
-      type: String,
-      default:
-        "https://img.lovepik.com/png/20231128/man-wearing-jacket-hoodie-in-anonymous-hacker-theme-login-access_718571_wh1200.png",
-      validate(value) {
-        if (!validator.isURL(value)) {
-          throw new Error("Invalid photo URL: " + value);
-        }
+      type: [String],
+      validate: {
+        validator: function (arr) {
+          return arr.every((url) => validator.isURL(url));
+        },
+        message: (props) => `Invalid photo URL(s) in: ${props.value}`,
       },
     },
     about: {
