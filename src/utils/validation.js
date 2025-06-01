@@ -21,7 +21,6 @@ const validateEditProfileData = (req) => {
     "emailId",
     "age",
     "gender",
-    "photoUrl",
     "about",
     "skills",
     "city",
