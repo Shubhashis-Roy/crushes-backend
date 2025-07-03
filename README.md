@@ -1,7 +1,7 @@
 <div align="center">
 
 <img src="https://as2.ftcdn.net/v2/jpg/08/86/96/65/1000_F_886966555_GxPibnZhRyy3e1RBXhxpLtGwCOVKsVfY.jpg"
-alt="logo" width="600" height="auto" />
+alt="logo" width="570" height="auto" />
 
   <p>
 Crushes – Social Matching App with React.js, Vite, Node, Express.js, MongoDB, React-Redux, Tailwind Css, 
