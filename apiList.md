@@ -16,7 +16,6 @@
 
 - status: interested, ignore
 - POST /request/send/:status/:userId
-
 - status: accepted, rejected
 - POST /request/review/:status/:requestId
 
