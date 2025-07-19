@@ -11,7 +11,7 @@ Crushes – Social Matching App with React.js, Vite, Node, Express.js, MongoDB, 
 
 <hr>
 <h3> <a href= "https://crushes.in/" >Live Demo</a> </h3>
-<h4> <a href= "https://github.com/Shubhashis-Roy/crushes-web" >Front-end Link</a> </h4>
+<h4> <a href= "https://github.com/Shubhashis-Roy/crushes-web" >Front-end Repo Link</a> </h4>
 <h2>Description</h2>
 
 - Developed a highly scalable, <b> fully responsive </b> full-stack dating web application featuring <b> real-time chat </b>
