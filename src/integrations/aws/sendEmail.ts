@@ -1,7 +1,7 @@
-const { SendEmailCommand } = require("@aws-sdk/client-ses");
-const { sesClient } = require("./sesClient.js");
+import { SendEmailCommand } from '@aws-sdk/client-ses';
+import { sesClient } from './sesClient.js';
 
-const createSendEmailCommand = (toAddress, fromAddress, emailId) => {
+const createSendEmailCommand = (toAddress: string, fromAddress: string, emailId: string) => {
   return new SendEmailCommand({
     Destination: {
       CcAddresses: [],
@@ -14,12 +14,12 @@ const createSendEmailCommand = (toAddress, fromAddress, emailId) => {
         //   Data: "<h1> This is Html body. </h1>",
         // },
         Text: {
-          Charset: "UTF-8",
-          Data: "This is a text body.",
+          Charset: 'UTF-8',
+          Data: 'This is a text body.',
         },
       },
       Subject: {
-        Charset: "UTF-8",
+        Charset: 'UTF-8',
         Data: `You have a friend request from ${emailId}`,
       },
     },
@@ -28,17 +28,18 @@ const createSendEmailCommand = (toAddress, fromAddress, emailId) => {
   });
 };
 
-const run = async (emailId) => {
+// export const run = async (emailId: string) => {
+export const sendEmail = async (emailId: string) => {
   const sendEmailCommand = createSendEmailCommand(
-    "shubhashisroy360@gmail.com", // recipient
-    "shubhashis@crushes.in", // sender
+    'shubhashisroy360@gmail.com', // recipient
+    'shubhashis@crushes.in', // sender
     emailId
   );
 
   try {
     return await sesClient.send(sendEmailCommand);
   } catch (caught) {
-    if (caught instanceof Error && caught.name === "MessageRejected") {
+    if (caught instanceof Error && caught.name === 'MessageRejected') {
       const messageRejectedError = caught;
       return messageRejectedError;
     }
@@ -47,4 +48,4 @@ const run = async (emailId) => {
 };
 
 // snippet-end:[ses.JavaScript.email.sendEmailV3]
-module.exports = { run };
+// export { run };

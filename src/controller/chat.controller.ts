@@ -1,18 +1,66 @@
-const Chat = require("../models/chat");
-// const User = require("../models/user");
+import Chat from '../models/chat.model';
+import { Request, Response } from 'express';
+import { IUser } from '../models/user.model';
 
-const chatting = async (req, res) => {
-  const { targetUserId } = req.params;
-  const userId = req.user._id;
+// const chatting = async (req: Request, res: Response) => {
+//   try {
+//     const { targetUserId } = req.params;
+//     if (!req.user) {
+//       res.status(401).json({ message: 'User is not logged in' });
+//       return;
+//     }
+//     const userId = req.user._id;
+//     let chat = await Chat.findOne({
+//       participants: {
+//         $all: [userId, targetUserId],
+//       },
+//     })
+//       .populate({
+//         path: 'messages.senderId',
+//         participants: {
+//           $all: [userId, targetUserId],
+//         },
+//       })
+//       .populate({
+//         path: 'messages.senderId',
+//         select: 'firstName lastName',
+//       });
+
+//     if (!chat) {
+//       chat = new Chat({
+//         participants: [userId, targetUserId],
+//         messages: [],
+//       });
+//       await chat.save();
+//     }
+
+//     res.json(chat);
+//   } catch (error) {
+//     console.log('Error get the chat:', error);
+//   }
+// };
+
+const chatting = async (req: Request, res: Response) => {
   try {
+    const { targetUserId } = req.params;
+    if (!req.user) {
+      res.status(401).json({ message: 'User is not logged in' });
+      return;
+    }
+    const userId = req.user._id;
     let chat = await Chat.findOne({
       participants: {
         $all: [userId, targetUserId],
       },
-    }).populate({
-      path: "messages.senderId",
-      select: "firstName lastName",
-    });
+    })
+      .populate({
+        path: 'messages.senderId',
+        select: 'firstName lastName',
+      })
+      .populate({
+        path: 'participants',
+        select: 'firstName lastName',
+      });
 
     if (!chat) {
       chat = new Chat({
@@ -24,7 +72,7 @@ const chatting = async (req, res) => {
 
     res.json(chat);
   } catch (error) {
-    console.log("Error get the chat:", error);
+    console.log('Error get the chat:', error);
   }
 };
 
@@ -64,26 +112,29 @@ const chatting = async (req, res) => {
 //   }
 // };
 
-const getChatUsersList = async (req, res) => {
-  const userId = req.user._id;
-
+const getChatUsersList = async (req: Request, res: Response) => {
   try {
+    if (!req.user) {
+      res.status(401).json({ message: 'User is not logged in' });
+      return;
+    }
+    const userId = req.user._id;
+
     // 1. Find chats where the user is a participant, sorted by latest update
     const chats = await Chat.find({ participants: userId })
-      .populate("participants", "firstName lastName photoUrl")
-      .sort({ updatedAt: -1 });
+      .populate('participants', 'firstName lastName photoUrl')
+      .sort({ updatedAt: -1 })
+      .exec();
 
     // 2. Extract other participants with lastMessage + updatedAt
     const chatUsers = chats.map((chat) => {
       const otherUser = chat.participants.find(
         (p) => p._id.toString() !== userId.toString()
-      );
+      ) as IUser;
+      if (!otherUser) return null;
 
       // Get the last message (if exists)
-      const lastMessage =
-        chat.messages.length > 0
-          ? chat.messages[chat.messages.length - 1]
-          : null;
+      const lastMessage = chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
 
       return {
         _id: otherUser._id,
@@ -101,8 +152,9 @@ const getChatUsersList = async (req, res) => {
       users: chatUsers,
     });
   } catch (error) {
-    res.status(400).send(`getChatUsersList API Error: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).send(`getChatUsersList API Error: ${message}`);
   }
 };
 
-module.exports = { chatting, getChatUsersList };
+export { getChatUsersList, chatting };
