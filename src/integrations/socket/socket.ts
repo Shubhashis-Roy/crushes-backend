@@ -5,7 +5,7 @@ import ConnectionRequestModel from '../../models/connectionRequest.model';
 import { Server } from 'http';
 import mongoose from 'mongoose';
 
-// 🔹 Type definitions
+// Type definitions
 interface MessagePayload {
   firstName: string;
   lastName: string;
@@ -25,12 +25,12 @@ interface JoinChatPayload {
   targetUserId: string;
 }
 
-// 🧩 Helper to generate secret room ID
+// Helper to generate secret room ID
 const getSecretRoomId = (userId: string, targetUserId: string): string => {
   return crypto.createHash('sha256').update([userId, targetUserId].sort().join('&')).digest('hex');
 };
 
-// 🧠 Main socket initialization
+// Main socket initialization
 const initializeSocket = (server: Server): SocketIOServer => {
   const io = new SocketIOServer(server, {
     cors: {
@@ -42,9 +42,7 @@ const initializeSocket = (server: Server): SocketIOServer => {
   const onlineUsers = new Map<string, string>();
 
   io.on('connection', (socket: Socket) => {
-    console.log(`✅ Socket connected: ${socket.id}`);
-
-    // 🔹 Join Chat Room
+    // Join Chat Room
     socket.on('joinChat', ({ firstName, userId, targetUserId }: JoinChatPayload) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.join(roomId);
@@ -53,19 +51,19 @@ const initializeSocket = (server: Server): SocketIOServer => {
       console.log(`${firstName} joined room ${roomId}`);
     });
 
-    // 🔹 Typing Event
+    // Typing Event
     socket.on('typing', ({ userId, targetUserId }: TypingPayload) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.to(roomId).emit('typing', { userId });
     });
 
-    // 🔹 Send Message
+    // Send Message
     socket.on('sendMessage', async (payload: MessagePayload) => {
       const { firstName, lastName, userId, targetUserId, text } = payload;
       const roomId = getSecretRoomId(userId, targetUserId);
 
       try {
-        // 🧠 Verify friendship
+        // Verify friendship
         const existingConnectionReq = await ConnectionRequestModel.findOne({
           $or: [
             { fromUserId: userId, toUserId: targetUserId, status: 'accepted' },
@@ -80,7 +78,7 @@ const initializeSocket = (server: Server): SocketIOServer => {
           return;
         }
 
-        // 💬 Save chat message
+        // Save chat message
         let chat = await Chat.findOne({
           participants: { $all: [userId, targetUserId] },
         });
@@ -101,11 +99,11 @@ const initializeSocket = (server: Server): SocketIOServer => {
         await chat.save();
         io.to(roomId).emit('messageReceived', { firstName, lastName, text });
       } catch (err) {
-        console.error('❌ Error while saving message:', err);
+        console.error('Error while saving message:', err);
       }
     });
 
-    // 🔹 Handle Disconnect
+    // Handle Disconnect
     socket.on('disconnect', () => {
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
@@ -114,7 +112,6 @@ const initializeSocket = (server: Server): SocketIOServer => {
           break;
         }
       }
-      console.log(`⚠️ Socket disconnected: ${socket.id}`);
     });
   });
 
