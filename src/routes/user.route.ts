@@ -5,10 +5,10 @@ import { getFeed, getAllConnection, getReceivedConnection } from '../controller/
 const userRouter = express.Router();
 
 // Get all the received connection request
-userRouter.get('/user/requests/received', userAuth, getReceivedConnection);
+userRouter.get('/requests/received', userAuth, getReceivedConnection);
 
 // Get all the user connections
-userRouter.get('/user/connections', userAuth, getAllConnection);
+userRouter.get('/connections', userAuth, getAllConnection);
 
 userRouter.get('/feed', userAuth, getFeed);
 

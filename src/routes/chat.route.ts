@@ -4,8 +4,8 @@ import { getChatUsersList, chatting } from '../controller/chat.controller';
 
 const chatRouter = express.Router();
 
-chatRouter.get('/chat/users-list', userAuth, getChatUsersList);
+chatRouter.get('/users-list', userAuth, getChatUsersList);
 
-chatRouter.get('/chat/:targetUserId', userAuth, chatting);
+chatRouter.get('/:targetUserId', userAuth, chatting);
 
 export default chatRouter;

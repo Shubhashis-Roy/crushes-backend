@@ -5,9 +5,9 @@ import { sendConnection, reviewConnection } from '../controller/request.controll
 const requestRouter = express.Router();
 
 // Connection send to other
-requestRouter.post('/request/send/:status/:toUserId', userAuth, sendConnection);
+requestRouter.post('/send/:status/:toUserId', userAuth, sendConnection);
 
 // Connection received
-requestRouter.post('/request/review/:status/:requestId', userAuth, reviewConnection);
+requestRouter.post('/review/:status/:requestId', userAuth, reviewConnection);
 
 export default requestRouter;

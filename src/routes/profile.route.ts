@@ -5,12 +5,12 @@ import { getUserProfile, updateProfile } from '../controller/profile.controller'
 const profileRouter = express.Router();
 
 //Profile
-profileRouter.get('/profile/view', userAuth, getUserProfile);
+profileRouter.get('/view', userAuth, getUserProfile);
 
 //Edit profile
-profileRouter.patch('/profile/edit', userAuth, updateProfile);
+profileRouter.patch('/edit', userAuth, updateProfile);
 
 //Add profile
-// profileRouter.post("/profile/editPhoto", userAuth, updateProfilePhoto);
+// profileRouter.post("/editPhoto", userAuth, updateProfilePhoto);
 
 export default profileRouter;
