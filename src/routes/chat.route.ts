@@ -1,6 +1,6 @@
 import express from 'express';
-import { userAuth } from '../middlewares/auth';
-import { getChatUsersList, chatting } from '../controller/chat.controller';
+import { userAuth } from '@/middlewares/auth';
+import { getChatUsersList, chatting } from '@/controller';
 
 const chatRouter = express.Router();
 

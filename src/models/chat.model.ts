@@ -1,5 +1,5 @@
 import mongoose, { Document, Types, Model } from 'mongoose';
-import { IUser } from './user.model';
+import { IUser } from '@/types/models/user';
 
 export interface IMessage {
   senderId: Types.ObjectId;

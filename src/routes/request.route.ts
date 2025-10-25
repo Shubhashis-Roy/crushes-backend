@@ -1,6 +1,6 @@
 import express from 'express';
 import { userAuth } from '../middlewares/auth';
-import { sendConnection, reviewConnection } from '../controller/request.controller';
+import { sendConnection, reviewConnection } from '@/controller';
 
 const requestRouter = express.Router();
 

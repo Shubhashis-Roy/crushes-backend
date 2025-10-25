@@ -2,15 +2,14 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { validateSignUpData } from '../utils/validation';
 import { Request, Response } from 'express';
-// import User, { IUser } from '../models/user.model';
-import User from '../models/user.model';
-import Chat from '../models/chat.model';
-import ConnectionRequest from '../models/connectionRequest.model';
+import User from '@/models/user.model';
+import Chat from '@/models/chat.model';
+import ConnectionRequest from '@/models/connectionRequest.model';
 
 const register = async (req: Request, res: Response): Promise<void> => {
   // Encryt the password
   try {
-    const { password, firstName, lastName, city, emailId } = req.body;
+    const { password, firstName, lastName, city, emailId, dob, gender, interest } = req.body;
 
     const alreadyPresentUser = await User.findOne({ emailId });
 
@@ -29,9 +28,12 @@ const register = async (req: Request, res: Response): Promise<void> => {
     const user = new User({
       firstName,
       lastName,
-      city,
       emailId,
       password: passwordHash,
+      dateOfBirth: dob,
+      city,
+      interest,
+      gender,
     });
 
     const savedUser = await user.save();

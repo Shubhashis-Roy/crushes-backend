@@ -1,29 +1,8 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
-// -------------------------
-// Interface for User document
-// -------------------------
-export interface IUser extends Document {
-  _id: mongoose.Types.ObjectId;
-  firstName: string;
-  lastName?: string;
-  emailId: string;
-  city: string;
-  password: string;
-  age?: number;
-  gender?: 'male' | 'female' | 'other';
-  photoUrl?: string[];
-  about?: string;
-  skills?: string[];
-  createdAt: Date;
-  updatedAt: Date;
-
-  getJWT(): Promise<string>;
-  validatePassword(passwordInputByUser: string): Promise<boolean>;
-}
+import { IUser } from '@/types/models/user';
 
 interface TypedValidatorProps<T> {
   path: string;
@@ -55,10 +34,6 @@ const userSchema = new Schema<IUser>(
         }
       },
     },
-    city: {
-      type: String,
-      required: true,
-    },
     password: {
       type: String,
       required: true,
@@ -68,10 +43,16 @@ const userSchema = new Schema<IUser>(
         }
       },
     },
-    age: {
-      type: Number,
-      min: 18,
+    dateOfBirth: {
+      type: String,
+      required: true,
+      match: /^\d{2}\/\d{2}\/\d{4}$/,
     },
+    city: {
+      type: String,
+      required: true,
+    },
+
     gender: {
       type: String,
       enum: {
@@ -89,13 +70,35 @@ const userSchema = new Schema<IUser>(
           `Invalid photo URL(s): ${props.value.join(', ')}`,
       },
     },
-    about: {
+
+    interest: {
       type: String,
-      default: 'This is a default about of user',
+      enum: {
+        values: ['male', 'female', 'non-binary', 'custom'],
+        message: `{VALUE} is not a valid gender type!`,
+      },
     },
-    skills: {
-      type: [String],
-      default: ['default - JS'],
+    profession: {
+      type: String,
+    },
+    organization: {
+      type: String,
+    },
+    education: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
+    lookingFor: {
+      type: String,
+    },
+    preferredAge: {
+      min: { type: Number },
+      max: { type: Number },
+    },
+    preferredDistance: {
+      type: Number,
     },
   },
   { timestamps: true }

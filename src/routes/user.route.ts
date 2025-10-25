@@ -1,6 +1,6 @@
 import express from 'express';
 import { userAuth } from '../middlewares/auth';
-import { getFeed, getAllConnection, getReceivedConnection } from '../controller/user.controller';
+import { getFeed, getAllConnection, getReceivedConnection } from '@/controller';
 
 const userRouter = express.Router();
 

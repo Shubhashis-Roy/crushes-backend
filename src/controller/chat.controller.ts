@@ -1,6 +1,6 @@
 import Chat from '../models/chat.model';
 import { Request, Response } from 'express';
-import { IUser } from '../models/user.model';
+import { IUser } from '@/types/models/user';
 
 // const chatting = async (req: Request, res: Response) => {
 //   try {
