@@ -1,7 +1,7 @@
 import ConnectionRequest from '../models/connectionRequest.model';
 import User from '../models/user.model';
 import { Request, Response } from 'express';
-import { IUser } from '../models/user.model';
+import { IUser } from '@/types/models/user';
 
 export interface AuthenticatedRequest extends Request {
   user?: IUser;

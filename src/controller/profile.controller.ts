@@ -1,10 +1,30 @@
-import { validateEditProfileData } from '../utils/validation';
-// import User from "../models/user.js";
+import User from '@/models/user.model';
+// import { IUser } from '@/types/models/user';
+import { IUser } from '@/types/models/user';
+// import { validateEditProfileData } from '../utils/validation';
 import { Request, Response } from 'express';
-import { IUser } from '../models/user.model';
 
 export interface AuthenticatedRequest extends Request {
   user?: IUser;
+}
+
+export interface IUpdateProfilePayload {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string; // "03/02/2003"
+  city?: string;
+  gender?: string;
+  interest?: string;
+  profession?: string;
+  organization?: string;
+  education?: string;
+  bio?: string;
+  lookingFor?: string;
+  preferredAge?: {
+    min: number;
+    max: number;
+  };
+  preferredDistance?: number;
 }
 
 const getUserProfile = async (req: Request, res: Response) => {
@@ -18,25 +38,62 @@ const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
+// Update user profile
 const updateProfile = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    if (!validateEditProfileData(req)) {
-      throw new Error('Invalid edit request');
-    }
-
     const user = req.user;
     if (!user) {
-      res.status(401).json({ message: 'User is not logged in' });
-      return;
+      return res.status(401).json({ message: 'User is not logged in' });
     }
 
-    Object.assign(user, req.body);
+    // const allowedKeys: (keyof IUpdateProfilePayload)[] = [
+    //   'firstName',
+    //   'lastName',
+    //   'dateOfBirth',
+    //   'city',
+    //   'gender',
+    //   'interest',
+    //   'profession',
+    //   'organization',
+    //   'education',
+    //   'bio',
+    //   'lookingFor',
+    //   'preferredAge',
+    //   'preferredDistance',
+    // ];
 
-    await user.save();
+    const filteredData: Partial<IUpdateProfilePayload> = {};
 
-    res.json({
-      message: `${user.firstName}, profile updated successfully!`,
-      data: user,
+    // Object.entries(req.body).forEach(([key, value]) => {
+    //   const typedKey = key as keyof IUpdateProfilePayload;
+
+    //   if (
+    //     allowedKeys.includes(key as keyof IUpdateProfilePayload) &&
+    //     value !== undefined &&
+    //     value !== null &&
+    //     value !== ''
+    //   ) {
+    //     filteredData[typedKey] = value as IUpdateProfilePayload[typeof typedKey];
+    //   }
+    // });
+
+    if (Object.keys(filteredData).length === 0) {
+      return res.status(400).json({ message: 'No valid fields to update' });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { $set: filteredData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({
+      message: 'Profile updated successfully!',
+      data: updatedUser,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
