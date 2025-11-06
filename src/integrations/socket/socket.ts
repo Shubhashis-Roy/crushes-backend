@@ -34,7 +34,7 @@ const getSecretRoomId = (userId: string, targetUserId: string): string => {
 const initializeSocket = (server: Server): SocketIOServer => {
   const io = new SocketIOServer(server, {
     cors: {
-      origin: process.env.FE_URL || 'http://localhost:5173', // ✅ Make sure this matches your frontend
+      origin: process.env.FE_URL || 'http://localhost:5173',
       credentials: true,
     },
   });
@@ -42,15 +42,16 @@ const initializeSocket = (server: Server): SocketIOServer => {
   const onlineUsers = new Map<string, string>();
 
   io.on('connection', (socket: Socket) => {
-    console.log('🟢 New client connected:', socket.id);
+    // console.log('New client connected:', socket.id);
 
-    // ========== 🔹 CHAT EVENTS (Existing) ==========
-    socket.on('joinChat', ({ firstName, userId, targetUserId }: JoinChatPayload) => {
+    // ========== CHAT EVENTS (Existing) ==========
+    // socket.on('joinChat', ({ firstName, userId, targetUserId }: JoinChatPayload) => {
+    socket.on('joinChat', ({ userId, targetUserId }: JoinChatPayload) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.join(roomId);
       onlineUsers.set(userId, socket.id);
       socket.to(roomId).emit('userStatus', { userId, status: 'online' });
-      console.log(`${firstName} joined room ${roomId}`);
+      // console.log(`${firstName} joined room ${roomId}`);
     });
 
     socket.on('typing', ({ userId, targetUserId }: TypingPayload) => {
@@ -93,12 +94,12 @@ const initializeSocket = (server: Server): SocketIOServer => {
       }
     });
 
-    // ========== 🔹 WEBRTC SIGNALING EVENTS (NEW) ==========
+    // ========== WEBRTC SIGNALING EVENTS (NEW) ==========
     socket.on('join-call', ({ userId, targetUserId }) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.join(roomId);
       socket.to(roomId).emit('peer-joined', { userId });
-      console.log(`📞 ${userId} joined call room ${roomId}`);
+      // console.log(`${userId} joined call room ${roomId}`);
     });
 
     // Offer from caller → forward to callee
@@ -123,10 +124,10 @@ const initializeSocket = (server: Server): SocketIOServer => {
     socket.on('end-call', ({ userId, targetUserId }) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.to(roomId).emit('call-ended', { from: userId });
-      console.log(`❌ ${userId} ended call in room ${roomId}`);
+      // console.log(`${userId} ended call in room ${roomId}`);
     });
 
-    // ========== 🔹 DISCONNECT ==========
+    // ========== DISCONNECT ==========
     socket.on('disconnect', () => {
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
@@ -135,7 +136,7 @@ const initializeSocket = (server: Server): SocketIOServer => {
           break;
         }
       }
-      console.log('🔴 Disconnected:', socket.id);
+      // console.log('Disconnected:', socket.id);
     });
   });
 
