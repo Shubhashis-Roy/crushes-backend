@@ -44,14 +44,13 @@ const initializeSocket = (server: Server): SocketIOServer => {
   io.on('connection', (socket: Socket) => {
     // console.log('New client connected:', socket.id);
 
-    // ========== CHAT EVENTS (Existing) ==========
+    // ========== CHAT EVENTS ==========
     // socket.on('joinChat', ({ firstName, userId, targetUserId }: JoinChatPayload) => {
     socket.on('joinChat', ({ userId, targetUserId }: JoinChatPayload) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       socket.join(roomId);
       onlineUsers.set(userId, socket.id);
       socket.to(roomId).emit('userStatus', { userId, status: 'online' });
-      // console.log(`${firstName} joined room ${roomId}`);
     });
 
     socket.on('typing', ({ userId, targetUserId }: TypingPayload) => {
@@ -92,6 +91,14 @@ const initializeSocket = (server: Server): SocketIOServer => {
       } catch (err) {
         console.error('Error while saving message:', err);
       }
+    });
+
+    // ========== VIDEO EVENTS ==========
+    socket.on('joinVideo', ({ userId, targetUserId }: JoinChatPayload) => {
+      const roomId = getSecretRoomId(userId, targetUserId);
+      socket.join(roomId);
+      onlineUsers.set(userId, socket.id);
+      socket.to(roomId).emit('userStatus', { userId, status: 'online' });
     });
 
     // ========== WEBRTC SIGNALING EVENTS (NEW) ==========

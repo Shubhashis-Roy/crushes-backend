@@ -46,36 +46,61 @@ const updateProfile = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(401).json({ message: 'User is not logged in' });
     }
 
-    // const allowedKeys: (keyof IUpdateProfilePayload)[] = [
-    //   'firstName',
-    //   'lastName',
-    //   'dateOfBirth',
-    //   'city',
-    //   'gender',
-    //   'interest',
-    //   'profession',
-    //   'organization',
-    //   'education',
-    //   'bio',
-    //   'lookingFor',
-    //   'preferredAge',
-    //   'preferredDistance',
-    // ];
+    const allowedKeys: (keyof IUpdateProfilePayload)[] = [
+      'firstName',
+      'lastName',
+      'dateOfBirth',
+      'city',
+      'gender',
+      'interest',
+      'profession',
+      'organization',
+      'education',
+      'bio',
+      'lookingFor',
+      'preferredAge',
+      'preferredDistance',
+    ];
 
     const filteredData: Partial<IUpdateProfilePayload> = {};
 
-    // Object.entries(req.body).forEach(([key, value]) => {
-    //   const typedKey = key as keyof IUpdateProfilePayload;
+    Object.entries(req.body).forEach(([key, value]) => {
+      const typedKey = key as keyof IUpdateProfilePayload;
 
-    //   if (
-    //     allowedKeys.includes(key as keyof IUpdateProfilePayload) &&
-    //     value !== undefined &&
-    //     value !== null &&
-    //     value !== ''
-    //   ) {
-    //     filteredData[typedKey] = value as IUpdateProfilePayload[typeof typedKey];
-    //   }
-    // });
+      // if (
+      //   allowedKeys.includes(key as keyof IUpdateProfilePayload) &&
+      //   value !== undefined &&
+      //   value !== null &&
+      //   value !== ''
+      // ) {
+      //   filteredData[typedKey] = value as IUpdateProfilePayload[typeof typedKey];
+      // }
+
+      if (allowedKeys.includes(typedKey) && value !== undefined && value !== null && value !== '') {
+        switch (typedKey) {
+          case 'preferredAge':
+            if (
+              typeof value === 'object' &&
+              value !== null
+              // && typeof value.min === 'number' &&
+              // typeof value.max === 'number'
+            ) {
+              filteredData[typedKey] = value as { min: number; max: number };
+            }
+            break;
+          case 'preferredDistance':
+            if (typeof value === 'number') {
+              filteredData[typedKey] = value as number;
+            }
+            break;
+          default:
+            if (typeof value === 'string') {
+              filteredData[typedKey] = value as string;
+            }
+            break;
+        }
+      }
+    });
 
     if (Object.keys(filteredData).length === 0) {
       return res.status(400).json({ message: 'No valid fields to update' });

@@ -13,7 +13,7 @@ export interface IUser extends Document {
   profession?: string;
   education?: string;
   bio?: string;
-  lookingFor?: string;
+  lookingFor?: string[];
   preferredAge?: string;
   preferredDistance?: string;
   createdAt: Date;

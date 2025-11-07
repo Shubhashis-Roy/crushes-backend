@@ -37,11 +37,11 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: true,
-      validate(value: string) {
-        if (!validator.isStrongPassword(value)) {
-          throw new Error('Enter a strong password: ' + value);
-        }
-      },
+      // validate(value: string) {
+      //   if (!validator.isStrongPassword(value)) {
+      //     throw new Error('Enter a strong password: ' + value);
+      //   }
+      // },
     },
     dateOfBirth: {
       type: String,
@@ -56,7 +56,7 @@ const userSchema = new Schema<IUser>(
     gender: {
       type: String,
       enum: {
-        values: ['male', 'female', 'other'],
+        values: ['male', 'female', 'non-binary', 'custom'],
         message: `{VALUE} is not a valid gender type!`,
       },
     },
@@ -72,10 +72,10 @@ const userSchema = new Schema<IUser>(
     },
 
     interest: {
-      type: String,
+      type: [String],
       enum: {
-        values: ['male', 'female', 'non-binary', 'custom'],
-        message: `{VALUE} is not a valid gender type!`,
+        values: ['men', 'women', 'everyone'],
+        message: `{VALUE} is not a valid interest type!`,
       },
     },
     profession: {
@@ -91,7 +91,7 @@ const userSchema = new Schema<IUser>(
       type: String,
     },
     lookingFor: {
-      type: String,
+      type: [String],
     },
     preferredAge: {
       min: { type: Number },
