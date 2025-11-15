@@ -48,9 +48,9 @@ connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
 //   next();
 // });
 
-// ✅ Pre-save hook with proper typing
+//  Pre-save hook with proper typing
 connectionRequestSchema.pre<IConnectionRequest>('save', function (next) {
-  // ✅ use `this` directly — no aliasing needed
+  //  use `this` directly — no aliasing needed
   if (this.fromUserId.equals(this.toUserId)) {
     throw new Error("Can't send connection request to yourself!");
   }

@@ -7,7 +7,7 @@ export interface AuthenticatedRequest extends Request {
   user?: IUser;
 }
 
-const USER_SAFE_DATA = 'firstName lastName city photoUrl skills about age';
+const USER_SAFE_DATA = 'firstName lastName city photoUrl bio dateOfBirth gender';
 
 // Get all the received connection request
 const getReceivedConnection = async (req: AuthenticatedRequest, res: Response) => {
