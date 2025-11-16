@@ -13,6 +13,6 @@ profileRouter.get('/view', userAuth, getUserProfile);
 profileRouter.patch('/edit', userAuth, updateProfile);
 
 //Add profile
-profileRouter.post('/editPhoto', userAuth, upload.array('photo', 6), addPhotos);
+profileRouter.post('/upload-photos', userAuth, upload.array('photo', 6), addPhotos);
 
 export default profileRouter;
