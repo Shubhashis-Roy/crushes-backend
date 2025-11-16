@@ -42,7 +42,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
     // Add the token to cookie & send the res back to the user
     res.cookie('token', token, {
-      expires: new Date(Date.now() + 2 * 3600000),
+      expires: new Date(Date.now() + 24 * 3600000),
     });
 
     res.status(200).send({ message: 'User Added Successfully!', data: savedUser });

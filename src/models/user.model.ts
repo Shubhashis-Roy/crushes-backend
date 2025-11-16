@@ -2,7 +2,7 @@ import mongoose, { Schema, Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { IUser } from '@/types/models/user';
+import { IPhotos, IUser } from '@/types/models/user';
 
 interface TypedValidatorProps<T> {
   path: string;
@@ -10,6 +10,29 @@ interface TypedValidatorProps<T> {
   type: string;
   reason?: Error;
 }
+
+// -------------------------
+// Photo Schema definition
+// -------------------------
+
+const PhotoSchema = new Schema<IPhotos>(
+  {
+    url: {
+      type: String,
+      // required: true,
+      validate: {
+        validator: (value: string) => validator.isURL(value),
+        message: (props: TypedValidatorProps<string[]>) =>
+          `Invalid photo URL(s): ${props.value.join(', ')}`,
+      },
+    },
+    public_id: {
+      type: String,
+      required: true,
+    },
+  },
+  { _id: false }
+);
 
 // -------------------------
 // Schema definition
@@ -61,13 +84,10 @@ const userSchema = new Schema<IUser>(
       },
     },
     photoUrl: {
-      type: [String],
+      type: [PhotoSchema],
       validate: {
-        validator(arr: string[]) {
-          return arr.every((url) => validator.isURL(url));
-        },
-        message: (props: TypedValidatorProps<string[]>) =>
-          `Invalid photo URL(s): ${props.value.join(', ')}`,
+        validator: (arr) => arr.length <= 6,
+        message: 'You can upload a maximum of 6 photos',
       },
     },
 
