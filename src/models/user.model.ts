@@ -15,7 +15,7 @@ interface TypedValidatorProps<T> {
 // Photo Schema definition
 // -------------------------
 
-const PhotoSchema = new Schema<IPhotos>(
+const photoSchema = new Schema<IPhotos>(
   {
     url: {
       type: String,
@@ -84,7 +84,7 @@ const userSchema = new Schema<IUser>(
       },
     },
     photoUrl: {
-      type: [PhotoSchema],
+      type: [photoSchema],
       validate: {
         validator: (arr) => arr.length <= 6,
         message: 'You can upload a maximum of 6 photos',

@@ -9,7 +9,9 @@ ToDo:
 
 
 
-
+TODO: 17 Nov
+- update /upload-add api: delete, replce photo 
+- add default img if no photo upload
 
 
 
