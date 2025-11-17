@@ -1,3 +1,4 @@
+import cloudinary from '@/config/cloudinary';
 import User from '@/models/user.model';
 // import { IUser } from '@/types/models/user';
 import { IUser } from '@/types/models/user';
@@ -126,43 +127,62 @@ const updateProfile = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-// // Edit and update profile photo
-// const updateProfilePhoto = async (req, res) => {
-//   const userId = req.user._id;
-//   const images = req.body.images;
-//   try {
-//     if (!images.length) {
-//       return res.status(400).json({ message: "Image is required" });
-//     } else if (images.length > 3) {
-//       return res.status(400).json({ message: "Add image limit 3." });
-//     }
+// Add photos
+const addPhotos = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user._id;
 
-//     const user = await User.findById({ _id: userId }).select("photoUrl");
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
+    // console.log(user, 'user hlo ==========');
 
-//     const currentPhotos = user.photoUrl;
+    user.photoUrl ||= [];
 
-//     const updatedPhotos = images.map((img, index) => {
-//       return img ?? currentPhotos[index];
-//     });
+    const existingPhotos = user.photoUrl.length;
 
-//     if (images.length < currentPhotos.length) {
-//       updatedPhotos.length = images.length;
-//     }
+    if (!req.files || !(req.files as Express.Multer.File[]).length) {
+      return res.status(400).json({ message: 'No images uploaded' });
+    }
 
-//     user.photoUrl = updatedPhotos;
-//     await user.save();
+    const newFiles = req.files as Express.Multer.File[];
 
-//     res.status(200).json({
-//       message: "Profile photos updated successfully",
-//       photoUrl: user.photoUrl,
-//     });
-//   } catch (error) {
-//     res.status(400).send(`profilePhotoUpdate api Error: ${error.message}`);
-//   }
-// };
+    if (existingPhotos + newFiles.length > 6) {
+      const remaining = 6 - existingPhotos;
+      return res.status(400).json({
+        message: `You can upload only ${remaining} more photos`,
+      });
+    }
+    // console.log(newFiles, 'user hlo ==========');
 
-export { getUserProfile, updateProfile };
+    const uploadPromises = newFiles.map((file) => {
+      const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+
+      return cloudinary.uploader.upload(base64, {
+        folder: 'user_photos',
+      });
+    });
+
+    const results = await Promise.all(uploadPromises);
+
+    const photoObjects = results.map((r) => ({
+      url: r.secure_url,
+      public_id: r.public_id,
+    }));
+
+    user.photoUrl.push(...photoObjects);
+
+    await user.save();
+
+    res.status(200).json({
+      message: 'Photos uploaded successfully',
+      totalPhotos: user.photoUrl.length,
+      photos: user.photoUrl,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).send(`profileUpdate API error: ${message}`);
+  }
+};
+
+export { getUserProfile, updateProfile, addPhotos };

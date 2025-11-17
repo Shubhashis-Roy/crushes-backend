@@ -22,3 +22,8 @@ export interface IUser extends Document {
   getJWT(): Promise<string>;
   validatePassword(passwordInputByUser: string): Promise<boolean>;
 }
+
+export interface IPhotos extends Document {
+  url?: string;
+  public_id?: string;
+}

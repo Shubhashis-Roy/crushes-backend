@@ -6,10 +6,6 @@ import cors from 'cors';
 
 // Routes
 import routes from './routes';
-// import requestRouter from './routes/request.route';
-// import profileRouter from './routes/profile.route';
-// import userRouter from './routes/user.route';
-// import chatRouter from './routes/chat.route';
 
 dotenv.config();
 
@@ -31,11 +27,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-// app.use('/', authRouter);
-// app.use('/', requestRouter);
-// app.use('/', profileRouter);
-// app.use('/', userRouter);
-// app.use('/', chatRouter);
 app.use('/api/v1', routes);
 
 export default app;
