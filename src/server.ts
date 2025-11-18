@@ -1,3 +1,4 @@
+import 'tsconfig-paths/register';
 import http from 'http';
 import app from './app';
 import initializeSocket from './integrations/socket/socket';

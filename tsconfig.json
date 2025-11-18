@@ -31,18 +31,18 @@
     /* Path aliases for cleaner imports */
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
-      "@/config/*": ["config/*"],
-      "@/constants/*": ["constants/*"],
-      "@/controller/*": ["controller/*"],
-      "@/cron-job/*": ["cron-job/*"],
-      "@/integrations/*": ["integrations/*"],
-      "@/middlewares/*": ["middlewares/*"],
-      "@/models/*": ["models/*"],
-      "@/routes/*": ["routes/*"],
-      "@/services/*": ["services/*"],
-      "@/types/*": ["types/*"],
-      "@/utils/*": ["utils/*"]
+      "@/*": ["./*"],
+      "@/config/*": ["./config/*"],
+      "@/constants/*": ["./constants/*"],
+      "@/controller/*": ["./controller/*"],
+      "@/cron-job/*": ["./cron-job/*"],
+      "@/integrations/*": ["./integrations/*"],
+      "@/middlewares/*": ["./middlewares/*"],
+      "@/models/*": ["./models/*"],
+      "@/routes/*": ["./routes/*"],
+      "@/services/*": ["./services/*"],
+      "@/types/*": ["./types/*"],
+      "@/utils/*": ["./utils/*"]
     }
   },
   "include": ["src"],
