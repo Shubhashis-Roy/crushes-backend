@@ -42,8 +42,6 @@ const initializeSocket = (server: Server): SocketIOServer => {
   const onlineUsers = new Map<string, string>();
 
   io.on('connection', (socket: Socket) => {
-    // console.log('New client connected:', socket.id);
-
     // ========== CHAT EVENTS ==========
     // socket.on('joinChat', ({ firstName, userId, targetUserId }: JoinChatPayload) => {
     socket.on('joinChat', ({ userId, targetUserId }: JoinChatPayload) => {
@@ -139,10 +137,18 @@ const initializeSocket = (server: Server): SocketIOServer => {
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
           onlineUsers.delete(userId);
-          io.emit('userStatus', { userId, status: 'offline' });
+
+          // notify ONLY relevant rooms
+          io.sockets.adapter.rooms.forEach((_, roomId) => {
+            if (roomId.includes(userId)) {
+              io.to(roomId).emit('userStatus', { userId, status: 'offline' });
+            }
+          });
+
           break;
         }
       }
+
       // console.log('Disconnected:', socket.id);
     });
   });
