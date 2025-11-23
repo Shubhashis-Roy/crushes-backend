@@ -1,7 +1,7 @@
 import { register, login, logout, deleteUser } from './auth.controller';
 import { getChatUsersList, chatting } from './chat.controller';
 import { getUserProfile, updateProfile } from './profile.controller';
-import { sendConnection, reviewConnection } from './request.controller';
+import { sendConnection, reviewConnection, deleteIgnoredRejectedUsers } from './request.controller';
 import { getFeed, getAllConnection, getReceivedConnection } from './user.controller';
 
 export {
@@ -18,4 +18,5 @@ export {
   getFeed,
   getAllConnection,
   getReceivedConnection,
+  deleteIgnoredRejectedUsers,
 };

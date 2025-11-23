@@ -53,3 +53,11 @@ when we take a domain name how it work internally ?
 http://16.16.185.216/
 
 crushes.in
+
+
+==============================
+DEPLOY BACKEND
+- pull last code.
+- install packages
+- npm run build (build the app)
+- restart pm2
