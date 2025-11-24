@@ -79,7 +79,7 @@ const userSchema = new Schema<IUser>(
     gender: {
       type: String,
       enum: {
-        values: ['male', 'female', 'non-binary', 'custom'],
+        values: ['male', 'female', 'non-binary', 'custom', 'other'],
         message: `{VALUE} is not a valid gender type!`,
       },
     },

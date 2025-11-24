@@ -2,6 +2,7 @@ import { deleteIgnoredRejectedService } from '@/services/request.servers';
 import cron from 'node-cron';
 
 // cron.schedule('*/1 * * * *', async () => {
+// every 2 houres
 cron.schedule('0 */2 * * *', async () => {
   try {
     await deleteIgnoredRejectedService();
