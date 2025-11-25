@@ -78,9 +78,9 @@ const getFeed = async (req: Request, res: Response) => {
     if (!loggedInUser) return;
 
     const page = parseInt(req.query.page as string) || 1;
-    let limit = parseInt(req.query.limit as string) || 10;
+    let limit = parseInt(req.query.limit as string) || 30;
 
-    limit = limit > 50 ? 50 : limit;
+    limit = limit > 40 ? 40 : limit;
 
     const skip = (page - 1) * limit;
 
@@ -102,8 +102,8 @@ const getFeed = async (req: Request, res: Response) => {
       $and: [{ _id: { $nin: Array.from(hideUsersFromFeed) } }, { _id: { $ne: loggedInUser._id } }],
     })
       .select(USER_SAFE_DATA)
-      .skip(skip);
-    // .limit(limit);
+      .skip(skip)
+      .limit(limit);
 
     res.json({
       message: 'Feed users',
