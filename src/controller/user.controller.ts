@@ -78,7 +78,7 @@ const getFeed = async (req: Request, res: Response) => {
     if (!loggedInUser) return;
 
     const page = parseInt(req.query.page as string) || 1;
-    let limit = parseInt(req.query.limit as string) || 30;
+    let limit = parseInt(req.query.limit as string) || 5;
 
     limit = limit > 40 ? 40 : limit;
 
