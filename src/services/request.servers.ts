@@ -1,12 +1,12 @@
 import ConnectionRequestModel from '@/models/connectionRequest.model';
 
 const deleteIgnoredRejectedService = async () => {
-  // Calculate timestamp for 4 hours ago
-  // const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
+  // Calculate timestamp for 2 hours ago
+  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 
   const filter = {
     status: { $in: ['ignored', 'rejected'] },
-    // createdAt: { $lt: fourHoursAgo },
+    createdAt: { $lt: twoHoursAgo },
   };
 
   const count = await ConnectionRequestModel.countDocuments(filter);

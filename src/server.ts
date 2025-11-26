@@ -5,7 +5,7 @@ import initializeSocket from './integrations/socket/socket';
 
 // Run cron jobs
 // import '@/cron-job/sendMailCronjob.cronJob';
-// import '@/cron-job/deleteIgnoredRejected.cronJob';
+import '@/cron-job/deleteIgnoredRejected.cronJob';
 
 const PORT = process.env.DEV_PORT || 5000;
 
