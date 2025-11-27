@@ -14,8 +14,8 @@ Crushes – Social Matching App with React.js, Vite, Node, Express.js, MongoDB, 
 <h4> <a href= "https://github.com/Shubhashis-Roy/crushes-web" >Front-end Repo Link</a> </h4>
 <h2>Description</h2>
 
-- Developed a highly scalable, <b> fully responsive </b> full-stack dating web application featuring <b> real-time chat </b>
-  with Socket.IO, an <b> infinite swipe </b> animated card interface, and <b> JWT-based </b> authentication.
+- Developed a highly scalable, <b> fully responsive </b> full-stack dating web application featuring <b> real-time chat and video call </b>
+  with Socket.IO and webRTC, an <b> infinite swipe </b> animated card interface, and <b> JWT-based </b> authentication.
 - Implemented daily match notification at 08:00 AM on emails using <b> cron jobs via AWS </b>.
 - Deployed the project(front-end, back-end) on <b> AWS</b>.
 - Users can add or update their details and upload or update up to three different images
